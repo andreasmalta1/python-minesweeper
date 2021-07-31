@@ -1,7 +1,12 @@
+# A CLI version of minesweeper
+# To play enter the row and column as indicated
+
 import random
 import re
 
 
+# Initialising the playing board
+# Playing board has a defined size and number of bombs
 class Board:
     def __init__(self, dim_size, num_bombs):
         self.dim_size = dim_size
@@ -12,6 +17,7 @@ class Board:
 
         self.dug = set()
 
+    # Drawing the board
     def make_new_board(self):
         board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
         bombs_planted = 0
@@ -35,6 +41,7 @@ class Board:
                     continue
                 self.board[r][c] = self.get_num_neighboring_bombs(r, c)
 
+    # Finding the number of bombs around the each location in order to assign the numer
     def get_num_neighboring_bombs(self, row, col):
         num_neigh_bombs = 0
         for r in range(max(0, row-1), min(self.dim_size-1, row+1)+1):
@@ -45,6 +52,7 @@ class Board:
                     num_neigh_bombs += 1
         return num_neigh_bombs
 
+    # Uncovering a particular location
     def dig(self, row, col):
         self.dug.add((row, col))
 
@@ -80,7 +88,7 @@ class Board:
                 )
             )
 
-        # print the csv strings
+        # Print the csv strings
         indices = [i for i in range(self.dim_size)]
         indices_row = '   '
         cells = []
@@ -106,6 +114,7 @@ class Board:
         return string_rep
 
 
+# Setting the board size and number of bombs)
 def play(dim_size=10, num_bombs=10):
     board = Board(dim_size, num_bombs)
     while len(board.dug) < board.dim_size ** 2 - num_bombs:
